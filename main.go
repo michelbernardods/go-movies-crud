@@ -8,8 +8,6 @@ import (
 	"github.com/michelbernardods/go-crud-movies/handler"
 )
 
-// var movies []handler.Movie
-
 func main() {
 	router := mux.NewRouter()
 
