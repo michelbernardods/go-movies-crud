@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 )
 
@@ -38,17 +39,17 @@ func GetMovie(w http.ResponseWriter, r *http.Request) {
 	for _, item := range movies {
 		if item.ID == params["id"] {
 			json.NewEncoder(w).Encode(item)
-			return
+			break
 		}
 	}
-	json.NewEncoder(w).Encode(movies)
 }
 
 func CreateMovie(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var movie Movie
 	_ = json.NewDecoder(r.Body).Decode(&movie)
-	movie.ID = movie.ID
+	id := uuid.New().String()
+	movie.ID = id
 	movies = append(movies, movie)
 	json.NewEncoder(w).Encode(movies)
 }
