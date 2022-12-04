@@ -2,9 +2,12 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	"github.com/michelbernardods/go-crud-movies/handler"
 )
 
@@ -17,6 +20,11 @@ func main() {
 	router.HandleFunc("/movies/updateMovie/{id}", handler.UpdateMovie).Methods("PUT")
 	router.HandleFunc("/movies/deleteMovie/{id}", handler.DeleteMovie).Methods("DELETE")
 
-	fmt.Println("Start server port: 8080")
-	http.ListenAndServe(":8080", router)
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Some error occured. Err: %s", err)
+	}
+
+	fmt.Printf("Start server port%s", os.Getenv("PORT_ENV"))
+	http.ListenAndServe(os.Getenv("PORT_ENV"), router)
 }
